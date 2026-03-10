@@ -37,7 +37,7 @@ function renderYear() {
       input.setAttribute("maxlength", "30");
       input.setAttribute("inputmode", "text");
 
-      const storageKey = `planner-${activeYear}-${monthIndex}-${i}`;
+      const storageKey = `fullmoon.pocketplanner.yearoverview.${activeYear}-${monthIndex}-${i}`;
 
       // Load saved value
       input.value = localStorage.getItem(storageKey) || "";
