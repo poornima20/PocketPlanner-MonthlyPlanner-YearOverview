@@ -67,7 +67,7 @@ html, body {
   background: transparent;
   outline: none;
 
-  font-size: clamp(8px, 0.8vw, 12px);
+  font-size: 12px;
   font-family: Inter, sans-serif;
 
   padding: 1px 2px;
@@ -76,6 +76,20 @@ html, body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* TABLET */
+@media (max-width: 1024px) {
+  .lines input {
+    font-size: 11px;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .lines input {
+    font-size: 9px;
+  }
 }
 
 
