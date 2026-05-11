@@ -79,3 +79,31 @@ titleEl.addEventListener("click", () => {
     renderYear();
   }
 });
+
+
+const header = document.querySelector(".title-wrapper");
+
+let startX = 0;
+let endX = 0;
+
+header.addEventListener("touchstart", (e) => {
+  startX = e.touches[0].clientX;
+});
+
+header.addEventListener("touchend", (e) => {
+  endX = e.changedTouches[0].clientX;
+
+  const diff = endX - startX;
+
+  // swipe right → next year
+  if (diff < 50) {
+    activeYear++;
+    renderYear();
+  }
+
+  // swipe left → previous year
+  if (diff > -50) {
+    activeYear--;
+    renderYear();
+  }
+});
