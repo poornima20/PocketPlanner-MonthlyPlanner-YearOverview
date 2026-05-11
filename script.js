@@ -6,10 +6,10 @@ const nextBtn = document.getElementById("nextYear");
 let activeYear = new Date().getFullYear();
 
 const monthNames = [
-  "JANUARY", "FEBRUARY", "MARCH",
-  "APRIL", "MAY", "JUNE",
-  "JULY", "AUGUST", "SEPTEMBER",
-  "OCTOBER", "NOVEMBER", "DECEMBER"
+  "January", "February", "March",
+  "April", "May", "June",
+  "July", "August", "September",
+  "October", "November", "December"
 ];
 
 function renderYear() {
@@ -25,8 +25,21 @@ function renderYear() {
     monthDiv.className = "month";
 
     const title = document.createElement("div");
-    title.className = "month-title";
-    title.textContent = month;
+      title.className = "month-title";
+      title.textContent = month;
+      title.style.transform = "scale(1.08)";
+      title.style.opacity = "1";
+
+      const currentDate = new Date();
+      const currentMonth = currentDate.getMonth();
+      const currentYear = currentDate.getFullYear();
+
+      if (
+        activeYear === currentYear &&
+        monthIndex === currentMonth
+      ) {
+        title.style.fontWeight = "700";
+      }
 
     const lines = document.createElement("div");
     lines.className = "lines";

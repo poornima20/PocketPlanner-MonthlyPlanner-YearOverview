@@ -46,8 +46,11 @@ html, body {
 /* MONTH TITLE */
 .month-title {
   text-align: center;
-  font-size: clamp(9px, 0.8vw, 12px);
-  letter-spacing: 1.5px;
+   font-family: "Great Vibes", cursive;
+  font-weight: 400;
+  font-style: normal;
+  font-size: clamp(9px, 2.2vw, 18px);
+  letter-spacing: 0.8px;
   margin-bottom: 4px;
 }
 
@@ -110,6 +113,7 @@ html, body {
 }
 
 .title {
+   font-family: "Montserrat", sans-serif;
   font-size: 13px;
   font-weight: 500;
   letter-spacing: 0.08em;
@@ -119,6 +123,7 @@ html, body {
 
   line-height: 1;
   cursor: pointer;
+  opacity: 0.8;
 }
 
 .year-arrow {
@@ -131,6 +136,7 @@ html, body {
 
   padding: 4px;
   cursor: pointer;
+  opacity: 0.6;
 }
 
 .year-arrow svg {
