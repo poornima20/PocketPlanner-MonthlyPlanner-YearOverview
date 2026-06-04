@@ -6,58 +6,96 @@ const nextBtn = document.getElementById("nextYear");
 let activeYear = new Date().getFullYear();
 
 const monthNames = [
-  "January", "February", "March",
-  "April", "May", "June",
-  "July", "August", "September",
-  "October", "November", "December"
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
+
+const STORAGE_KEY = "fullmoon.pocketplanner.yearoverview";
+
+const savedData = JSON.parse(localStorage.getItem(STORAGE_KEY));
+
+const yearOverviewData = savedData?.data || {};
+
+function notifyDashboardSync() {
+  if (window.parent !== window) {
+    window.parent.postMessage(
+      {
+        type: "plannerChanged",
+        planner: STORAGE_KEY,
+      },
+      "*",
+    );
+  }
+}
+
+function saveYearOverview() {
+  localStorage.setItem(
+    STORAGE_KEY,
+
+    JSON.stringify({
+      data: yearOverviewData,
+
+      updatedAt: Date.now(),
+    }),
+  );
+
+  notifyDashboardSync();
+}
 
 function renderYear() {
   monthsContainer.innerHTML = "";
   titleEl.textContent = activeYear + " Overview";
-  
-   const todayYear = new Date().getFullYear();
-  titleEl.style.opacity = activeYear === todayYear ? "1" : "0.8";
-  
-  monthNames.forEach((month, monthIndex) => {
 
+  const todayYear = new Date().getFullYear();
+  titleEl.style.opacity = activeYear === todayYear ? "1" : "0.8";
+
+  monthNames.forEach((month, monthIndex) => {
     const monthDiv = document.createElement("div");
     monthDiv.className = "month";
 
     const title = document.createElement("div");
-      title.className = "month-title";
-      title.textContent = month;
-      title.style.transform = "scale(1.08)";
-      title.style.opacity = "1";
+    title.className = "month-title";
+    title.textContent = month;
+    title.style.transform = "scale(1.08)";
+    title.style.opacity = "1";
 
-      const currentDate = new Date();
-      const currentMonth = currentDate.getMonth();
-      const currentYear = currentDate.getFullYear();
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth();
+    const currentYear = currentDate.getFullYear();
 
-      if (
-        activeYear === currentYear &&
-        monthIndex === currentMonth
-      ) {
-        title.style.fontWeight = "700";
-      }
+    if (activeYear === currentYear && monthIndex === currentMonth) {
+      title.style.fontWeight = "700";
+    }
 
     const lines = document.createElement("div");
     lines.className = "lines";
 
     for (let i = 0; i < 4; i++) {
-
       const input = document.createElement("input");
       input.setAttribute("maxlength", "35");
       input.setAttribute("inputmode", "text");
 
-      const storageKey = `fullmoon.pocketplanner.yearoverview.${activeYear}-${monthIndex}-${i}`;
-
+      const storageKey = `${activeYear}-${monthIndex}-${i}`;
       // Load saved value
-      input.value = localStorage.getItem(storageKey) || "";
+      input.value = yearOverviewData[storageKey] || "";
 
       // Save on input
       input.addEventListener("input", () => {
-        localStorage.setItem(storageKey, input.value);
+        yearOverviewData[storageKey] = input.value;
+      });
+
+      input.addEventListener("blur", () => {
+        saveYearOverview();
       });
 
       lines.appendChild(input);
@@ -83,7 +121,6 @@ nextBtn.addEventListener("click", () => {
 // Initial render
 renderYear();
 
-
 // Jump back to current year when title is clicked
 titleEl.addEventListener("click", () => {
   const todayYear = new Date().getFullYear();
@@ -92,7 +129,6 @@ titleEl.addEventListener("click", () => {
     renderYear();
   }
 });
-
 
 const header = document.querySelector(".title-wrapper");
 
