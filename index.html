@@ -1,39 +1,41 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Year Overview</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Year Overview</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body>
+    <div class="planner">
+      <div class="title-wrapper">
+        <button id="prevYear" class="year-arrow">
+          <i data-lucide="circle-chevron-down"></i>
+        </button>
 
-</head>
-<body>
+        <div id="plannerTitle" class="title"></div>
 
-<div class="planner">
- <div class="title-wrapper">
-  <button id="prevYear" class="year-arrow">
-    <i data-lucide="chevron-left"></i>
-  </button>
+        <button id="nextYear" class="year-arrow">
+          <i data-lucide="circle-chevron-up"></i>
+        </button>
+      </div>
+      <div class="months" id="months"></div>
+    </div>
 
-  <div class="title" id="plannerTitle"></div>
-
-  <button id="nextYear" class="year-arrow">
-    <i data-lucide="chevron-right"></i>
-  </button>
-</div>
-
-
-
-  <div class="months" id="months"></div>
-</div>
-
-
-
-<script src="script.js"></script>
-<script>lucide.createIcons();</script>
-</body>
+    <script src="script.js"></script>
+    <script>
+      lucide.createIcons();
+    </script>
+  </body>
 </html>

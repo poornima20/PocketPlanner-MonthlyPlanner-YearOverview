@@ -1,3 +1,6 @@
+/* ==========================================
+   Initialization 
+========================================== */
 const monthsContainer = document.getElementById("months");
 const titleEl = document.getElementById("plannerTitle");
 const prevBtn = document.getElementById("prevYear");
@@ -20,11 +23,13 @@ const monthNames = [
   "December",
 ];
 
+/* ==========================================
+   Local Storage
+========================================== */
 const STORAGE_KEY = "fullmoon.pocketplanner.yearoverview";
 
-const savedData = JSON.parse(localStorage.getItem(STORAGE_KEY));
-
-const yearOverviewData = savedData?.data || {};
+const savedData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+const yearOverviewData = savedData.years || {};
 
 function notifyDashboardSync() {
   if (window.parent !== window) {
@@ -41,10 +46,8 @@ function notifyDashboardSync() {
 function saveYearOverview() {
   localStorage.setItem(
     STORAGE_KEY,
-
     JSON.stringify({
-      data: yearOverviewData,
-
+      years: yearOverviewData,
       updatedAt: Date.now(),
     }),
   );
@@ -52,9 +55,12 @@ function saveYearOverview() {
   notifyDashboardSync();
 }
 
+/* ==========================================
+  Main Function
+========================================== */
 function renderYear() {
   monthsContainer.innerHTML = "";
-  titleEl.textContent = activeYear + " Overview";
+  titleEl.textContent = activeYear;
 
   const todayYear = new Date().getFullYear();
   titleEl.style.opacity = activeYear === todayYear ? "1" : "0.8";
@@ -77,32 +83,28 @@ function renderYear() {
       title.style.fontWeight = "700";
     }
 
-    const lines = document.createElement("div");
-    lines.className = "lines";
+    const notes = document.createElement("textarea");
+    notes.className = "month-notes";
 
-    for (let i = 0; i < 4; i++) {
-      const input = document.createElement("input");
-      input.setAttribute("maxlength", "35");
-      input.setAttribute("inputmode", "text");
-
-      const storageKey = `${activeYear}-${monthIndex}-${i}`;
-      // Load saved value
-      input.value = yearOverviewData[storageKey] || "";
-
-      // Save on input
-      input.addEventListener("input", () => {
-        yearOverviewData[storageKey] = input.value;
-      });
-
-      input.addEventListener("blur", () => {
-        saveYearOverview();
-      });
-
-      lines.appendChild(input);
+    if (!yearOverviewData[activeYear]) {
+      yearOverviewData[activeYear] = {};
     }
 
+    notes.value = yearOverviewData[activeYear][month] || "";
+
+    notes.addEventListener("input", () => {
+      if (!yearOverviewData[activeYear]) {
+        yearOverviewData[activeYear] = {};
+      }
+
+      yearOverviewData[activeYear][month] = notes.value;
+    });
+
+    notes.addEventListener("blur", saveYearOverview);
+
     monthDiv.appendChild(title);
-    monthDiv.appendChild(lines);
+    monthDiv.appendChild(notes);
+
     monthsContainer.appendChild(monthDiv);
   });
 }
@@ -118,41 +120,20 @@ nextBtn.addEventListener("click", () => {
   renderYear();
 });
 
+/* ==========================================
+   Start up Call
+========================================== */
 // Initial render
 renderYear();
 
+/* ==========================================
+   Helper functions
+========================================== */
 // Jump back to current year when title is clicked
 titleEl.addEventListener("click", () => {
   const todayYear = new Date().getFullYear();
   if (activeYear !== todayYear) {
     activeYear = todayYear;
-    renderYear();
-  }
-});
-
-const header = document.querySelector(".title-wrapper");
-
-let startX = 0;
-let endX = 0;
-
-header.addEventListener("touchstart", (e) => {
-  startX = e.touches[0].clientX;
-});
-
-header.addEventListener("touchend", (e) => {
-  endX = e.changedTouches[0].clientX;
-
-  const diff = endX - startX;
-
-  // swipe right → next year
-  if (diff < 50) {
-    activeYear++;
-    renderYear();
-  }
-
-  // swipe left → previous year
-  if (diff > -50) {
-    activeYear--;
     renderYear();
   }
 });
